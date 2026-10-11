@@ -1,0 +1,47 @@
+scrapeConfigs:
+  kubernetes-api-servers:
+    post_relabel_configs: |
+      - action: replace
+        target_label: __address__
+        replacement: "10.0.0.1:443"
+# Disable components not required for this lab
+alertmanager:
+  enabled: false
+
+prometheus-pushgateway:
+  enabled: false
+
+# Collect Kubernetes object metrics
+kube-state-metrics:
+  enabled: true
+
+# Collect node metrics
+prometheus-node-exporter:
+  enabled: true
+
+server:
+  enabled: true
+
+  # Avoid creating a new Azure managed disk
+  persistentVolume:
+    enabled: false
+
+  # Keep only six hours of metrics
+  retention: "6h"
+
+  emptyDir:
+    sizeLimit: 1Gi
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 768Mi
+
+  service:
+    type: ClusterIP
+
+  global:
+    scrape_interval: 30s

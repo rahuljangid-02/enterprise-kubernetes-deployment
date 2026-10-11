@@ -1,0 +1,38 @@
+
+apiVersion: batch/v1
+kind: Job
+
+metadata:
+  name: node-scale-test
+
+spec:
+  completions: 3
+  parallelism: 3
+  backoffLimit: 0
+  activeDeadlineSeconds: 1800
+  ttlSecondsAfterFinished: 120
+
+  template:
+    metadata:
+      labels:
+        app: node-scale-test
+
+    spec:
+      restartPolicy: Never
+
+      containers:
+        - name: cpu-reservation
+          image: busybox:1.36
+
+          command:
+            - /bin/sh
+            - -c
+            - "sleep 1200"
+
+          resources:
+            requests:
+              cpu: "750m"
+              memory: "64Mi"
+            limits:
+              cpu: "1000m"
+              memory: "128Mi"

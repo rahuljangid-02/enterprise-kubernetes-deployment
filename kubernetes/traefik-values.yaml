@@ -1,0 +1,27 @@
+
+deployment:
+  replicas: 1
+
+ingressClass:
+  enabled: true
+  isDefaultClass: false
+  name: traefik
+
+providers:
+  kubernetesIngress:
+    enabled: true
+
+service:
+  type: LoadBalancer
+
+  annotations:
+    service.beta.kubernetes.io/azure-dns-label-name: "weather-k8s-youruniquename"
+
+ports:
+  web:
+    expose:
+      default: true
+
+  websecure:
+    expose:
+      default: true
